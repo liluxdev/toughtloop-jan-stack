@@ -1,0 +1,3 @@
+[submodule "toughtloop"]
+	path = toughtloop
+	url = https://github.com/liluxdev/jan-ai-toughtloop-client.git
