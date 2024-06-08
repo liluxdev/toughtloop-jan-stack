@@ -1,0 +1,1 @@
+docker stack deploy -c docker-compose-wetier.yml srv_ai --profile cpu-s3fs up -d

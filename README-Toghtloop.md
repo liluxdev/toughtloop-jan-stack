@@ -1,0 +1,1 @@
+docker-compose --file docker-compose-toughtloop.yml --profile cpu-s3fs up -d          
