@@ -66,8 +66,6 @@ services:
       AWS_REGION: us-east-1
       API_BASE_URL: http://jan:1337
     restart: always
-    profiles:
-      - cpu-s3fs
     ports:
       - '3000:3000'
       - '1337:1337'
@@ -75,75 +73,6 @@ services:
     networks:
       - sys_net
 
-  # app_gpu service for running the GPU version of the application
-  app_gpu_s3fs:
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
-    image: ghcr.io/janhq/jan-server:dev-cuda-12.2-latest
-    volumes:
-      - app_data_gpu_s3fs:/app/server/build/jan
-    restart: always
-    environment:
-      # Set the AWS access key, secret access key, bucket name, endpoint, and region for app_gpu
-      AWS_ACCESS_KEY_ID: minioadmin
-      AWS_SECRET_ACCESS_KEY: minioadmin
-      S3_BUCKET_NAME: mybucket
-      AWS_ENDPOINT: http://minio:9000
-      AWS_REGION: us-east-1
-      API_BASE_URL: http://app_gpu_s3fs:1337
-    profiles:
-      - gpu-s3fs
-    ports:
-      - '3000:3000'
-      - '1337:1337'
-      - '3928:3928'
-    networks:
-      - sys_net
-
-  app_cpu_fs:
-    image: ghcr.io/janhq/jan-server:dev-cpu-latest
-    volumes:
-      - app_data_cpu_fs:/app/server/build/jan
-    environment:
-      API_BASE_URL: http://app_cpu_fs:1337
-    restart: always
-    profiles:
-      - cpu-fs
-    ports:
-      - '3000:3000'
-      - '1337:1337'
-      - '3928:3928'
-    networks:
-      - sys_net
-
-  # app_gpu service for running the GPU version of the application
-  app_gpu_fs:
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
-    image: ghcr.io/janhq/jan-server:dev-cuda-12.2-latest
-    volumes:
-      - app_data_gpu_fs:/app/server/build/jan
-    restart: always
-    environment:
-      API_BASE_URL: http://app_gpu_fs:1337
-    profiles:
-      - gpu-fs
-    ports:
-      - '3000:3000'
-      - '1337:1337'
-      - '3928:3928'
-    networks:
-      - sys_net
 
 volumes:
   minio_data:
