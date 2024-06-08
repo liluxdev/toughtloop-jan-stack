@@ -57,7 +57,7 @@ services:
   app_cpu_s3fs:
     volumes:
       - app_data_cpu_s3fs:/app/server/build/jan
-    image: ghcr.io/janhq/jan-server:dev-cpu-latest
+    image: ghcr.io/janhq/jan-server:cpu-v0.4.14
     environment:
       # Set the AWS access key, secret access key, bucket name, endpoint, and region for app_cpu
       AWS_ACCESS_KEY_ID: minioadmin
