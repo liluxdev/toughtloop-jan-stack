@@ -9,7 +9,7 @@ services:
     volumes:
       - /mnt/volumes/toughtloop:/app/stealth_db
     environment:
-      API_BASE_URI: http://app_cpu_s3fs:1337
+      API_BASE_URI: http://jan:1337
     restart: always
     ports:
       - '8080:3000'
@@ -53,7 +53,7 @@ services:
       - sys_net
 
   # app_cpu service for running the CPU version of the application
-  app_cpu_s3fs:
+  jan:
     volumes:
       - app_data_cpu_s3fs:/app/server/build/jan
     image: ghcr.io/janhq/jan-server:cpu-v0.4.14
@@ -64,7 +64,7 @@ services:
       S3_BUCKET_NAME: mybucket
       AWS_ENDPOINT: http://minio:9000
       AWS_REGION: us-east-1
-      API_BASE_URL: http://app_cpu_s3fs:1337
+      API_BASE_URL: http://jan:1337
     restart: always
     profiles:
       - cpu-s3fs
