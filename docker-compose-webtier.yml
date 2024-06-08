@@ -11,8 +11,8 @@ services:
     environment:
       API_BASE_URI: http://jan:1337
     restart: always
-    ports:
-      - '8080:3000'
+    #ports:
+    #  - '8080:3000'
     networks:
       - sys_net
   # Minio service for object storage
@@ -20,9 +20,9 @@ services:
     image: minio/minio
     volumes:
       - minio_data:/data
-    ports:
-      - '9000:9000'
-      - '9001:9001'
+    #ports:
+    #  - '9000:9000'
+    #  - '9001:9001'
     environment:
       # Set the root user and password for Minio
       MINIO_ROOT_USER: minioadmin # This acts as AWS_ACCESS_KEY
@@ -66,10 +66,10 @@ services:
       AWS_REGION: us-east-1
       API_BASE_URL: http://jan:1337
     restart: always
-    ports:
-      - '3000:3000'
-      - '1337:1337'
-      - '3928:3928'
+    #ports:
+    #  - '3000:3000'
+    #  - '1337:1337'
+    #  - '3928:3928'
     networks:
       - sys_net
 
@@ -77,9 +77,7 @@ services:
 volumes:
   minio_data:
   app_data_cpu_s3fs:
-  app_data_gpu_s3fs:
   app_data_cpu_fs:
-  app_data_gpu_fs:
 
 networks:
   sys_net:
