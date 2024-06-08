@@ -5,7 +5,7 @@ version: '3.7'
 services:
   #Toguthloop client
   toughtloop:
-    build: ./toughtloop
+    image: ghcr.io/liluxdev/jan-ai-toughtloop-client:release
     volumes:
       - /mnt/volumes/toughtloop:/app/stealth_db
     environment:
