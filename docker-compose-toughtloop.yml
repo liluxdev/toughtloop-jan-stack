@@ -9,14 +9,14 @@ services:
     volumes:
       - toughtloop_data:/app/stealth_db
     environment:
-      API_BASE_URI: http://app_cpu_s3fs:1337
+      API_BASE_URI: http://jan:1337
     restart: always
     ports:
       - '8080:3000'
     networks:
       - vpcbr
   # Minio service for object storage
-  minio:
+  bucket_storage:
     image: minio/minio
     volumes:
       - minio_data:/data
@@ -30,7 +30,7 @@ services:
     command: server --console-address ":9001" /data
     restart: always
     healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost:9000/minio/health/live']
+      test: ['CMD', 'curl', '-f', 'http://bucket_storage:9000/minio/health/live']
       interval: 30s
       timeout: 20s
       retries: 3
@@ -45,7 +45,7 @@ services:
       - minio
     entrypoint: >
       /bin/sh -c "
-      /usr/bin/mc alias set myminio http://minio:9000 minioadmin minioadmin;
+      /usr/bin/mc alias set myminio http://bucket_storage:9000 minioadmin minioadmin;
       /usr/bin/mc mb myminio/mybucket;
       /usr/bin/mc policy set public myminio/mybucket;
       exit 0;
@@ -54,18 +54,18 @@ services:
       vpcbr:
 
   # app_cpu service for running the CPU version of the application
-  app_cpu_s3fs:
+  jan:
     volumes:
       - app_data_cpu_s3fs:/app/server/build/jan
-    image: ghcr.io/janhq/jan-server:dev-cpu-latest
+    image: ghcr.io/janhq/jan-server:cpu-v0.4.14
     environment:
       # Set the AWS access key, secret access key, bucket name, endpoint, and region for app_cpu
       AWS_ACCESS_KEY_ID: minioadmin
       AWS_SECRET_ACCESS_KEY: minioadmin
       S3_BUCKET_NAME: mybucket
-      AWS_ENDPOINT: http://10.5.0.2:9000
+      AWS_ENDPOINT: http://bucket_storage:9000
       AWS_REGION: us-east-1
-      API_BASE_URL: http://localhost:1337
+      API_BASE_URL: http://jan:1337
     restart: always
     profiles:
       - cpu-s3fs
